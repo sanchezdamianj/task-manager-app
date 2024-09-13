@@ -1,12 +1,20 @@
-import react from "eslint-plugin-react";
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
 
-export default tseslint.config({
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    react,
+
+export default [
+  {files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"]},
+  {languageOptions: { globals: globals.browser }},
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  {
+    rules: {
+      // Disable the 'react/react-in-jsx-scope' rule
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+    },
   },
-  rules: {
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
+];
